@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wholesale Catalog</title>
+  <link rel="icon" href="favicon.ico" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -96,7 +97,7 @@
     function sendToWhatsApp() {
       const phone = '13105551234'; // Replace with your phone number
       const msg = cart.map(item => `${item.name} x${item.qty}`).join(', ');
-      const url = `https://wa.me/${phone}?text=Order: ${encodeURIComponent(msg)}`;
+      const url = `https://wa.me/${phone}?text=Order:%20${encodeURIComponent(msg)}`;
       window.open(url, '_blank');
     }
   </script>

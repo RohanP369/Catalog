@@ -41,93 +41,37 @@
       padding: 10px;
       display: inline-block;
     }
-    .dropdown {
+    .dropdown, .sub-dropdown {
       display: none;
       position: absolute;
       top: 100%;
       left: 0;
       background: #fff;
       border: 1px solid #ccc;
-      min-width: 150px;
+      min-width: 200px;
       z-index: 1000;
     }
-    .dropdown a {
+    .dropdown a, .sub-dropdown a {
       display: block;
       padding: 10px;
       color: #000;
       text-decoration: none;
       border-bottom: 1px solid #eee;
+      white-space: nowrap;
     }
-    .dropdown a:hover {
+    .dropdown a:hover, .sub-dropdown a:hover {
       background: #f0f0f0;
     }
-    .menu-item:hover .dropdown {
+    .menu-item:hover .dropdown,
+    .dropdown-item:hover .sub-dropdown {
       display: block;
     }
-    .section {
-      padding: 40px 20px;
-    }
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-    .product {
+    .dropdown-item {
       position: relative;
-      border: 1px solid #eee;
-      border-radius: 8px;
-      padding: 16px;
-      background-color: #f9f9f9;
     }
-    .stock-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: #d4af37;
-      color: #000;
-      padding: 5px 10px;
-      font-weight: bold;
-      border-radius: 5px;
-      font-size: 0.9em;
-    }
-    .product img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      margin-bottom: 10px;
-    }
-    .product h3, .product p {
-      margin: 5px 0;
-    }
-    .btn {
-      background-color: #d4af37;
-      color: #000;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 10px 5px 0 0;
-    }
-    .pagination {
-      text-align: center;
-      margin-top: 20px;
-    }
-    .pagination button {
-      margin: 0 5px;
-      padding: 6px 10px;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      cursor: pointer;
-    }
-    .pagination button.active {
-      background-color: #d4af37;
-      font-weight: bold;
-    }
-    .cart {
-      margin: 40px 20px;
-      background-color: #f2f2f2;
-      padding: 20px;
-      border-radius: 8px;
+    .sub-dropdown {
+      left: 100%;
+      top: 0;
     }
   </style>
 </head>
@@ -138,175 +82,32 @@
 
   <nav>
     <div class="menu-item">
-      <a href="#">Water Pipe</a>
+      <a href="#">Glass Items</a>
       <div class="dropdown">
-        <a href="#china-waterpipe">China Waterpipe</a>
-          <div class="dropdown">
-            <a href="breaker-bong">Beaker Bong</a>
-        <a href="#straight-tubes">Straight Tubes</a>
-        <a href="#percolators">Percolators</a>
-      </div>
-    </div>
-    <div class="menu-item">
-      <a href="#">Hand Pipe</a>
-      <div class="dropdown">
-        <a href="#spoon-pipes">Spoon Pipes</a>
-        <a href="#steamrollers">Steamrollers</a>
-        <a href="#chillums">Chillums</a>
-      </div>
-    </div>
-    <div class="menu-item">
-      <a href="#">Silicone Pipe</a>
-      <div class="dropdown">
-        <a href="#silicone-spoons">Silicone Spoons</a>
-        <a href="#silicone-handpipes">Silicone Handpipes</a>
-      </div>
-    </div>
-    <div class="menu-item">
-      <a href="#">Bubbler</a>
-      <div class="dropdown">
-        <a href="#mini-bubblers">Mini Bubblers</a>
-        <a href="#sherlock-bubblers">Sherlock Bubblers</a>
-      </div>
-    </div>
-    <div class="menu-item">
-      <a href="#">Oil Burner</a>
-      <div class="dropdown">
-        <a href="#glass-oil-burners">Glass Oil Burners</a>
-        <a href="#thick-oil-burners">Thick Oil Burners</a>
+        <div class="dropdown-item">
+          <a href="#">Water Pipe</a>
+          <div class="sub-dropdown">
+            <div class="dropdown-item">
+              <a href="#">China Water Pipe</a>
+              <div class="sub-dropdown">
+                <a href="#beaker-bongs">Beaker Bong</a>
+                <a href="#small-water-pipes">Small Water Pipe</a>
+              </div>
+            </div>
+            <div class="dropdown-item">
+              <a href="#">India Water Pipe</a>
+              <div class="sub-dropdown">
+                <a href="#beaker-bongs">Beaker Bong</a>
+                <a href="#small-water-pipes">Small Water Pipe</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
 
-  <section id="glass-pipes" class="section">
-    <h2>Glass Pipes</h2>
-    <div id="glass-pipes-grid" class="product-grid"></div>
-    <div class="pagination" id="glass-pipes-pagination"></div>
-  </section>
-
-  <div class="cart">
-    <h2>Cart</h2>
-    <ul id="cart-list"></ul>
-    <button class="btn" onclick="checkoutWhatsApp()">Send via WhatsApp</button>
-    <button class="btn" onclick="checkoutSMS()">Send via Text Message</button>
-    <button class="btn" onclick="checkoutEmail()">Send via Email</button>
-  </div>
-
-  <script>
-    const productsGlassPipes = Array.from({ length: 100 }, (_, i) => ({
-      name: `Glass Pipe ${i + 1}`,
-      sku: `GP${String(i + 1).padStart(3, '0')}`,
-      price: 5 + (i % 3),
-      stock: 10 + (i % 5),
-      height: 4 + (i % 3),
-      weight: 120 + (i * 2),
-      image: 'https://via.placeholder.com/200x150'
-    }));
-
-    let cart = [];
-    let currentPage = 1;
-    const productsPerPage = 9;
-
-    function displayProducts(collection, products, page) {
-      const grid = document.getElementById(`${collection}-grid`);
-      const pagination = document.getElementById(`${collection}-pagination`);
-      grid.innerHTML = '';
-      pagination.innerHTML = '';
-
-      const start = (page - 1) * productsPerPage;
-      const selected = products.slice(start, start + productsPerPage);
-
-      selected.forEach(prod => {
-        const div = document.createElement('div');
-        div.className = 'product';
-        div.dataset.name = prod.name;
-        div.dataset.price = prod.price;
-        div.dataset.sku = prod.sku;
-        div.dataset.stock = prod.stock;
-        div.innerHTML = `
-          <div class="stock-badge">Stock: ${prod.stock}</div>
-          <img src="${prod.image}" alt="${prod.name}">
-          <h3>${prod.name}</h3>
-          <p>SKU: ${prod.sku}</p>
-          <p>Height: ${prod.height}"</p>
-          <p>Weight: ${prod.weight}g</p>
-          <p>Price: $${prod.price}</p>
-          <input type="number" min="1" value="1" class="qty" />
-          <button class="btn" onclick="addToCart(this)">Add to Cart</button>
-        `;
-        grid.appendChild(div);
-      });
-
-      const totalPages = Math.ceil(products.length / productsPerPage);
-      for (let i = 1; i <= totalPages; i++) {
-        const btn = document.createElement('button');
-        btn.textContent = i;
-        btn.className = i === page ? 'active' : '';
-        btn.onclick = () => {
-          currentPage = i;
-          displayProducts(collection, products, currentPage);
-        };
-        pagination.appendChild(btn);
-      }
-    }
-
-    function addToCart(button) {
-      const product = button.closest('.product');
-      const name = product.dataset.name;
-      const price = parseFloat(product.dataset.price);
-      const sku = product.dataset.sku;
-      const qty = parseInt(product.querySelector('.qty').value);
-      const stock = parseInt(product.dataset.stock);
-
-      if (qty > stock) {
-        alert("Not enough stock available.");
-        return;
-      }
-
-      const existing = cart.find(item => item.sku === sku);
-      if (existing) {
-        existing.qty += qty;
-      } else {
-        cart.push({ name, sku, price, qty });
-      }
-      renderCart();
-    }
-
-    function renderCart() {
-      const cartList = document.getElementById('cart-list');
-      cartList.innerHTML = '';
-      cart.forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = `${item.name} (${item.sku}) x${item.qty} - $${item.qty * item.price}`;
-        cartList.appendChild(li);
-      });
-    }
-
-    function formatCartMessage() {
-      return cart.map(item => `${item.name} (${item.sku}) x${item.qty}`).join(', ');
-    }
-
-    function checkoutWhatsApp() {
-      const phone = '13105551234';
-      const msg = formatCartMessage();
-      const url = `https://wa.me/${phone}?text=Order:%20${encodeURIComponent(msg)}`;
-      window.open(url, '_blank');
-    }
-
-    function checkoutSMS() {
-      const phone = '13105551234';
-      const msg = encodeURIComponent('Order: ' + formatCartMessage());
-      window.open(`sms:${phone}?body=${msg}`, '_blank');
-    }
-
-    function checkoutEmail() {
-      const email = 'sales@silvermoon.com';
-      const subject = encodeURIComponent('Wholesale Order Request');
-      const body = encodeURIComponent('Here is my order:\n' + formatCartMessage());
-      window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-    }
-
-    displayProducts('glass-pipes', productsGlassPipes, currentPage);
-  </script>
+  <!-- Sections and content follow here -->
 </body>
 </html>
+

@@ -22,16 +22,47 @@
       color: #000;
     }
     nav {
-      padding: 20px;
       background: #f3f3f3;
       border-bottom: 1px solid #ccc;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+      position: relative;
+      flex-wrap: wrap;
     }
-    nav a {
+    .menu-item {
+      position: relative;
       margin: 0 15px;
+    }
+    .menu-item > a {
+      font-weight: bold;
       text-decoration: none;
       color: #000;
-      font-weight: bold;
+      padding: 10px;
+      display: inline-block;
+    }
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #fff;
+      border: 1px solid #ccc;
+      min-width: 150px;
+      z-index: 1000;
+    }
+    .dropdown a {
+      display: block;
+      padding: 10px;
+      color: #000;
+      text-decoration: none;
+      border-bottom: 1px solid #eee;
+    }
+    .dropdown a:hover {
+      background: #f0f0f0;
+    }
+    .menu-item:hover .dropdown {
+      display: block;
     }
     .section {
       padding: 40px 20px;
@@ -106,10 +137,43 @@
   </header>
 
   <nav>
-    <a href="#glass-pipes">Glass Pipes</a>
-    <a href="#rolling-papers">Rolling Papers</a>
-    <a href="#vapes">Vapes</a>
-    <a href="#accessories">Accessories</a>
+    <div class="menu-item">
+      <a href="#">Water Pipe</a>
+      <div class="dropdown">
+        <a href="#beaker-bongs">Beaker Bongs</a>
+        <a href="#straight-tubes">Straight Tubes</a>
+        <a href="#percolators">Percolators</a>
+      </div>
+    </div>
+    <div class="menu-item">
+      <a href="#">Hand Pipe</a>
+      <div class="dropdown">
+        <a href="#spoon-pipes">Spoon Pipes</a>
+        <a href="#steamrollers">Steamrollers</a>
+        <a href="#chillums">Chillums</a>
+      </div>
+    </div>
+    <div class="menu-item">
+      <a href="#">Silicone Pipe</a>
+      <div class="dropdown">
+        <a href="#silicone-spoons">Silicone Spoons</a>
+        <a href="#silicone-handpipes">Silicone Handpipes</a>
+      </div>
+    </div>
+    <div class="menu-item">
+      <a href="#">Bubbler</a>
+      <div class="dropdown">
+        <a href="#mini-bubblers">Mini Bubblers</a>
+        <a href="#sherlock-bubblers">Sherlock Bubblers</a>
+      </div>
+    </div>
+    <div class="menu-item">
+      <a href="#">Oil Burner</a>
+      <div class="dropdown">
+        <a href="#glass-oil-burners">Glass Oil Burners</a>
+        <a href="#thick-oil-burners">Thick Oil Burners</a>
+      </div>
+    </div>
   </nav>
 
   <section id="glass-pipes" class="section">
@@ -244,4 +308,3 @@
   </script>
 </body>
 </html>
-

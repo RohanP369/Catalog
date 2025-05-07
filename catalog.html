@@ -65,6 +65,21 @@
       cursor: pointer;
       margin-top: 10px;
     }
+    .pagination {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .pagination button {
+      margin: 0 5px;
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      cursor: pointer;
+    }
+    .pagination button.active {
+      background-color: #d4af37;
+      font-weight: bold;
+    }
     .cart {
       margin: 40px 20px;
       background-color: #f2f2f2;
@@ -87,40 +102,8 @@
 
   <section id="glass-pipes" class="section">
     <h2>Glass Pipes</h2>
-    <div class="product-grid">
-      <!-- Example product -->
-      <div class="product" data-name="Glass Pipe 1" data-price="5" data-sku="SKU001" data-stock="20">
-        <img src="https://via.placeholder.com/200x150" alt="Glass Pipe 1">
-        <h3>Glass Pipe 1</h3>
-        <p>SKU: SKU001</p>
-        <p>Price: $5</p>
-        <p>Stock: 20</p>
-        <input type="number" min="1" value="1" class="qty" />
-        <button class="btn" onclick="addToCart(this)">Add to Cart</button>
-      </div>
-      <!-- Repeat this block 8 more times with different SKUs -->
-    </div>
-  </section>
-
-  <section id="rolling-papers" class="section">
-    <h2>Rolling Papers</h2>
-    <div class="product-grid">
-      <!-- Placeholder products -->
-    </div>
-  </section>
-
-  <section id="vapes" class="section">
-    <h2>Vapes</h2>
-    <div class="product-grid">
-      <!-- Placeholder products -->
-    </div>
-  </section>
-
-  <section id="accessories" class="section">
-    <h2>Accessories</h2>
-    <div class="product-grid">
-      <!-- Placeholder products -->
-    </div>
+    <div id="glass-pipes-grid" class="product-grid"></div>
+    <div class="pagination" id="glass-pipes-pagination"></div>
   </section>
 
   <div class="cart">
@@ -130,7 +113,58 @@
   </div>
 
   <script>
+    const productsGlassPipes = Array.from({ length: 100 }, (_, i) => ({
+      name: `Glass Pipe ${i + 1}`,
+      sku: `GP${String(i + 1).padStart(3, '0')}`,
+      price: 5 + (i % 3),
+      stock: 10 + (i % 5),
+      image: 'https://via.placeholder.com/200x150'
+    }));
+
     let cart = [];
+    let currentPage = 1;
+    const productsPerPage = 9;
+
+    function displayProducts(collection, products, page) {
+      const grid = document.getElementById(`${collection}-grid`);
+      const pagination = document.getElementById(`${collection}-pagination`);
+      grid.innerHTML = '';
+      pagination.innerHTML = '';
+
+      const start = (page - 1) * productsPerPage;
+      const selected = products.slice(start, start + productsPerPage);
+
+      selected.forEach(prod => {
+        const div = document.createElement('div');
+        div.className = 'product';
+        div.dataset.name = prod.name;
+        div.dataset.price = prod.price;
+        div.dataset.sku = prod.sku;
+        div.dataset.stock = prod.stock;
+        div.innerHTML = `
+          <img src="${prod.image}" alt="${prod.name}">
+          <h3>${prod.name}</h3>
+          <p>SKU: ${prod.sku}</p>
+          <p>Price: $${prod.price}</p>
+          <p>Stock: ${prod.stock}</p>
+          <input type="number" min="1" value="1" class="qty" />
+          <button class="btn" onclick="addToCart(this)">Add to Cart</button>
+        `;
+        grid.appendChild(div);
+      });
+
+      const totalPages = Math.ceil(products.length / productsPerPage);
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i;
+        btn.className = i === page ? 'active' : '';
+        btn.onclick = () => {
+          currentPage = i;
+          displayProducts(collection, products, currentPage);
+        };
+        pagination.appendChild(btn);
+      }
+    }
 
     function addToCart(button) {
       const product = button.closest('.product');
@@ -165,11 +199,13 @@
     }
 
     function checkoutWhatsApp() {
-      const phone = '13105551234'; // Replace with your number
+      const phone = '13105551234';
       const msg = cart.map(item => `${item.name} (${item.sku}) x${item.qty}`).join(', ');
       const url = `https://wa.me/${phone}?text=Order:%20${encodeURIComponent(msg)}`;
       window.open(url, '_blank');
     }
+
+    displayProducts('glass-pipes', productsGlassPipes, currentPage);
   </script>
 </body>
 </html>

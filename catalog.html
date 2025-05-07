@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Silver Moon Catalog</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      color: #000;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #d4af37;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      color: #000;
+    }
+    .container {
+      padding: 20px;
+    }
+    .product {
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #f9f9f9;
+    }
+    .product img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+    .product h3 {
+      margin: 10px 0 5px;
+    }
+    .btn {
+      background-color: #d4af37;
+      color: #000;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .cart {
+      margin-top: 30px;
+      background-color: #f2f2f2;
+      padding: 20px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Silver Moon Catalog</h1>
+  </header>
+  <div class="container">
+    <div class="product" data-name="Glass Pipe" data-price="5">
+      <img src="https://via.placeholder.com/100" alt="Glass Pipe">
+      <h3>Glass Pipe</h3>
+      <p>$5 each</p>
+      <input type="number" value="1" min="1" class="qty">
+      <button class="btn" onclick="addToCart(this)">Add to Cart</button>
+    </div>
+
+    <div class="product" data-name="Rolling Papers" data-price="2">
+      <img src="https://via.placeholder.com/100" alt="Rolling Papers">
+      <h3>Rolling Papers</h3>
+      <p>$2 each</p>
+      <input type="number" value="1" min="1" class="qty">
+      <button class="btn" onclick="addToCart(this)">Add to Cart</button>
+    </div>
+
+    <div class="cart">
+      <h2>Cart</h2>
+      <ul id="cart-list"></ul>
+      <button class="btn" onclick="checkoutWhatsApp()">Send Order via WhatsApp</button>
+    </div>
+  </div>
+
+  <script>
+    let cart = [];
+
+    function addToCart(button) {
+      const product = button.closest('.product');
+      const name = product.dataset.name;
+      const price = parseFloat(product.dataset.price);
+      const qty = parseInt(product.querySelector('.qty').value);
+
+      const existing = cart.find(item => item.name === name);
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        cart.push({ name, price, qty });
+      }
+      renderCart();
+    }
+
+    function renderCart() {
+      const cartList = document.getElementById('cart-list');
+      cartList.innerHTML = '';
+      cart.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} x${item.qty} - $${item.qty * item.price}`;
+        cartList.appendChild(li);
+      });
+    }
+
+    function checkoutWhatsApp() {
+      const phone = '13105551234'; // Replace with your number
+      const msg = cart.map(item => `${item.name} x${item.qty}`).join(', ');
+      const url = `https://wa.me/${phone}?text=Order:%20${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+    }
+  </script>
+</body>
+</html>

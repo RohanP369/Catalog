@@ -205,20 +205,20 @@
     }
 
     function checkoutWhatsApp() {
-      const phone = '13105551234';
+      const phone = '15625521628';
       const msg = formatCartMessage();
       const url = `https://wa.me/${phone}?text=Order:%20${encodeURIComponent(msg)}`;
       window.open(url, '_blank');
     }
 
     function checkoutSMS() {
-      const phone = '13105551234';
+      const phone = '15625521628';
       const msg = encodeURIComponent('Order: ' + formatCartMessage());
       window.open(`sms:${phone}?body=${msg}`, '_blank');
     }
 
     function checkoutEmail() {
-      const email = 'sales@silvermoon.com';
+      const email = 'bigeyeglass@gmail.com';
       const subject = encodeURIComponent('Wholesale Order Request');
       const body = encodeURIComponent('Here is my order:\n' + formatCartMessage());
       window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;

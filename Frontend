@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wholesale Catalog</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    .product {
+      background: white;
+      padding: 16px;
+      margin: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .product img {
+      max-width: 100px;
+      display: block;
+    }
+    .product h3 {
+      margin: 10px 0 5px;
+    }
+    .cart-button, .whatsapp-button {
+      background-color: #25D366;
+      color: white;
+      padding: 8px 12px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+    .cart {
+      margin-top: 20px;
+      padding: 16px;
+      background: #fff;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Wholesale Catalog</h1>
+  <div class="product" data-name="Glass Pipe" data-price="4">
+    <img src="https://via.placeholder.com/100" alt="Glass Pipe">
+    <h3>Glass Pipe</h3>
+    <p>$4 each</p>
+    Quantity: <input type="number" value="1" min="1" class="qty-input" />
+    <button class="cart-button" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product" data-name="Rolling Papers" data-price="1">
+    <img src="https://via.placeholder.com/100" alt="Rolling Papers">
+    <h3>Rolling Papers</h3>
+    <p>$1 each</p>
+    Quantity: <input type="number" value="1" min="1" class="qty-input" />
+    <button class="cart-button" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="cart">
+    <h2>Cart</h2>
+    <ul id="cart-list"></ul>
+    <button class="whatsapp-button" onclick="sendToWhatsApp()">Send Order via WhatsApp</button>
+  </div>
+
+  <script>
+    let cart = [];
+
+    function addToCart(button) {
+      const productDiv = button.closest('.product');
+      const name = productDiv.dataset.name;
+      const price = parseFloat(productDiv.dataset.price);
+      const qty = parseInt(productDiv.querySelector('.qty-input').value);
+      const existing = cart.find(item => item.name === name);
+
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        cart.push({ name, price, qty });
+      }
+      renderCart();
+    }
+
+    function renderCart() {
+      const list = document.getElementById('cart-list');
+      list.innerHTML = '';
+      cart.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} x${item.qty} ($${item.price * item.qty})`;
+        list.appendChild(li);
+      });
+    }
+
+    function sendToWhatsApp() {
+      const phone = '13105551234'; // Replace with your phone number
+      const msg = cart.map(item => `${item.name} x${item.qty}`).join(', ');
+      const url = `https://wa.me/${phone}?text=Order: ${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+    }
+  </script>
+</body>
+</html>

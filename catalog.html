@@ -38,7 +38,7 @@
     }
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 20px;
     }
     .product {
@@ -63,7 +63,7 @@
       padding: 8px 12px;
       border-radius: 5px;
       cursor: pointer;
-      margin-top: 10px;
+      margin: 10px 5px 0 0;
     }
     .pagination {
       text-align: center;
@@ -109,7 +109,9 @@
   <div class="cart">
     <h2>Cart</h2>
     <ul id="cart-list"></ul>
-    <button class="btn" onclick="checkoutWhatsApp()">Send Order via WhatsApp</button>
+    <button class="btn" onclick="checkoutWhatsApp()">Send via WhatsApp</button>
+    <button class="btn" onclick="checkoutSMS()">Send via Text Message</button>
+    <button class="btn" onclick="checkoutEmail()">Send via Email</button>
   </div>
 
   <script>
@@ -198,11 +200,28 @@
       });
     }
 
+    function formatCartMessage() {
+      return cart.map(item => `${item.name} (${item.sku}) x${item.qty}`).join(', ');
+    }
+
     function checkoutWhatsApp() {
       const phone = '13105551234';
-      const msg = cart.map(item => `${item.name} (${item.sku}) x${item.qty}`).join(', ');
+      const msg = formatCartMessage();
       const url = `https://wa.me/${phone}?text=Order:%20${encodeURIComponent(msg)}`;
       window.open(url, '_blank');
+    }
+
+    function checkoutSMS() {
+      const phone = '13105551234';
+      const msg = encodeURIComponent('Order: ' + formatCartMessage());
+      window.open(`sms:${phone}?body=${msg}`, '_blank');
+    }
+
+    function checkoutEmail() {
+      const email = 'sales@silvermoon.com';
+      const subject = encodeURIComponent('Wholesale Order Request');
+      const body = encodeURIComponent('Here is my order:\n' + formatCartMessage());
+      window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
     }
 
     displayProducts('glass-pipes', productsGlassPipes, currentPage);

@@ -1,38 +1,43 @@
-[
-  {
-    "id": "p001",
-    "name": "Beaker Bong - 12 inch",
-    "sku": "BB-12INCH",
-    "height": "12 in",
-    "weight": "1.2 lbs",
-    "price": 25.00,
-    "yourPrice": 22.00,
-    "stock": 18,
-    "category": "Glass Items > Waterpipe > China Water Pipe > Beaker Bong",
-    "image": "images/beaker-bong.jpg"
-  },
-  {
-    "id": "p002",
-    "name": "Small Water Pipe",
-    "sku": "SWP-8",
-    "height": "8 in",
-    "weight": "0.9 lbs",
-    "price": 18.00,
-    "yourPrice": 16.00,
-    "stock": 25,
-    "category": "Glass Items > Waterpipe > India Water Pipe > Small Water Pipe",
-    "image": "images/small-waterpipe.jpg"
-  },
-  {
-    "id": "p003",
-    "name": "Silicone Hand Pipe",
-    "sku": "SHP-4",
-    "height": "4 in",
-    "weight": "0.3 lbs",
-    "price": 6.00,
-    "yourPrice": 6.00,
-    "stock": 40,
-    "category": "Hand Pipe > Silicone Pipe",
-    "image": "images/silicone-handpipe.jpg"
-  }
-]
+{
+  "collections": [
+    {
+      "name": "Water Pipe",
+      "slug": "water-pipe",
+      "products": [
+        {
+          "name": "Beaker Bong",
+          "sku": "WP001",
+          "price": 25.00,
+          "stock": 50,
+          "height": "12 in",
+          "weight": "500g",
+          "image": "images/beaker-bong.jpg"
+        },
+        {
+          "name": "Small Water Pipe",
+          "sku": "WP002",
+          "price": 18.50,
+          "stock": 80,
+          "height": "6 in",
+          "weight": "300g",
+          "image": "images/small-water-pipe.jpg"
+        }
+      ]
+    },
+    {
+      "name": "Hand Pipe",
+      "slug": "hand-pipe",
+      "products": [
+        {
+          "name": "Glass Spoon Pipe",
+          "sku": "HP001",
+          "price": 12.00,
+          "stock": 100,
+          "height": "4 in",
+          "weight": "150g",
+          "image": "images/spoon-pipe.jpg"
+        }
+      ]
+    }
+  ]
+}

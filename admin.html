@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal - Silver Moon</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
+    h2 { text-align: center; }
+    .form-container { max-width: 500px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input, button { width: 100%; padding: 10px; margin: 10px 0; }
+    #drop-area { border: 2px dashed #ccc; padding: 20px; text-align: center; margin-bottom: 10px; cursor: pointer; background: #fafafa; }
+    #preview { max-width: 100%; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Add New Product</h2>
+    <div id="drop-area">Drag & Drop Image Here or Click to Upload</div>
+    <input type="file" id="fileElem" accept="image/*" style="display:none" />
+    <img id="preview" src="" alt="Preview" style="display:none" />
+    <input type="text" id="name" placeholder="Product Name" />
+    <input type="text" id="sku" placeholder="SKU" />
+    <input type="number" id="price" placeholder="Price" />
+    <input type="number" id="stock" placeholder="Stock" />
+    <input type="text" id="height" placeholder="Height (e.g., 6 in)" />
+    <input type="text" id="weight" placeholder="Weight (e.g., 400g)" />
+    <button onclick="uploadProduct()">Upload Product</button>
+    <p id="status"></p>
+  </div>
+
+  <script>
+    // Your Firebase config here
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+
+    const dropArea = document.getElementById('drop-area');
+    const fileElem = document.getElementById('fileElem');
+    const preview = document.getElementById('preview');
+    let selectedFile = null;
+
+    dropArea.addEventListener('click', () => fileElem.click());
+    fileElem.addEventListener('change', handleFiles);
+    dropArea.addEventListener('dragover', e => {
+      e.preventDefault();
+      dropArea.style.background = '#e3e3e3';
+    });
+    dropArea.addEventListener('dragleave', () => dropArea.style.background = '#fafafa');
+    dropArea.addEventListener('drop', e => {
+      e.preventDefault();
+      fileElem.files = e.dataTransfer.files;
+      handleFiles();
+    });
+
+    function handleFiles() {
+      selectedFile = fileElem.files[0];
+      if (selectedFile) {
+        preview.src = URL.createObjectURL(selectedFile);
+        preview.style.display = 'block';
+      }
+    }
+
+    async function uploadProduct() {
+      const name = document.getElementById('name').value;
+      const sku = document.getElementById('sku').value;
+      const price = parseFloat(document.getElementById('price').value);
+      const stock = parseInt(document.getElementById('stock').value);
+      const height = document.getElementById('height').value;
+      const weight = document.getElementById('weight').value;
+
+      if (!name || !sku || !price || !stock || !height || !weight || !selectedFile) {
+        document.getElementById('status').innerText = 'All fields are required.';
+        return;
+      }
+
+      const storageRef = storage.ref().child(`products/${Date.now()}_${selectedFile.name}`);
+      try {
+        await storageRef.put(selectedFile);
+        const imageUrl = await storageRef.getDownloadURL();
+
+        await db.collection("products").add({
+          name, sku, price, stock, height, weight, image: imageUrl, createdAt: new Date()
+        });
+
+        document.getElementById('status').innerText = 'Product uploaded successfully!';
+        document.querySelector('form')?.reset();
+        preview.style.display = 'none';
+      } catch (error) {
+        console.error(error);
+        document.getElementById('status').innerText = 'Upload failed. Check console.';
+      }
+    }
+  </script>
+</body>
+</html>
